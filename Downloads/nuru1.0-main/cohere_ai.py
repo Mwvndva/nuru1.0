@@ -1,15 +1,25 @@
 import cohere
 
 # Initialize Cohere
-COHERE_API_KEY = "A1tvQQRVN0JQEJBr2lHY4dQOuSgwiN8AmkJnglZB"  # Replace with your actual API key
-co = cohere.Client(COHERE_API_KEY)
+cohere_client = cohere.Client("A1tvQQRVN0JQEJBr2lHY4dQOuSgwiN8AmkJnglZB")
 
 def generate_ai_response(user_query):
-    """Generate a human-like response using Cohere AI when the database has no answer."""
-    response = co.generate(
-        model="command",  # You can use 'command' or 'command-light' for faster responses
-        prompt=f"You are a travel assistant. Answer this user query in a friendly and helpful way:\n\n{user_query}",
-        max_tokens=100,
-        temperature=0.8  # Adjust for more or less creativity
+    """Generates structured travel responses with 5 real examples."""
+    response = cohere_client.generate(
+        model="command",
+        prompt=f"""
+        You are a travel assistant. Provide a structured response listing 5 real-world examples related to "{user_query}". 
+        Each example should include:
+        - Name
+        - Location
+        - A short description
+        - Price range (if applicable)
+        - Rating (if applicable)
+
+        Keep the response clear and structured for easy reading.
+        """,
+        max_tokens=300,
+        temperature=0.8,  # Adjust for creativity
     )
     return response.generations[0].text.strip()
+
